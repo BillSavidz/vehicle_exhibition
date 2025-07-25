@@ -57,7 +57,7 @@ footer {
   display: block;
   margin: 1rem auto;
   object-fit: contain; /* ensures full image is visible */
-  border: 1px solid #ddd;
+  <!--border: 1px solid #ddd;-->
   border-radius: 6px;
 }
 
