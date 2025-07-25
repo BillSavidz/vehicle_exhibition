@@ -65,12 +65,26 @@ footer {
   margin: 0 1rem 1rem;
 }
 
+.price-tags {
+  margin: 0 1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
 .price {
   display: inline-block;
-  background-color: #16a34a;
-  color: white;
   padding: 0.4rem 0.8rem;
   border-radius: 6px;
-  margin: 0 1rem 1rem;
   font-weight: bold;
+  color: white;
 }
+
+.price.new {
+  background-color: #16a34a; /* green */
+}
+
+.price.preowned {
+  background-color: #2563eb; /* blue */
+}
+
