@@ -1,7 +1,13 @@
-a:link,
-a:visited {
-  color: #ffffff;
+nav a {
+  color: white;
+  margin: 0 0.5rem;
 }
+
+/* Ensure visited links match normal links */
+nav a:visited {
+  color: white;
+}
+
 {
   margin: 0;
   padding: 0;
