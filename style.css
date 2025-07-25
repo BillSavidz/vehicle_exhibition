@@ -1,5 +1,8 @@
-/* Reset & Base */
-* {
+a:link,
+a:visited {
+  color: #1a0dab;
+}
+{
   margin: 0;
   padding: 0;
   box-sizing: border-box;
