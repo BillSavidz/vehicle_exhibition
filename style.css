@@ -1,3 +1,10 @@
+header .logo {
+  height: 60px;
+  display: block;
+  scale: .7;
+  margin: 0 auto 0.5rem;
+}
+
 nav a {
   color: white;
   margin: 0 0.5rem;
