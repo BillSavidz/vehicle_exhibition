@@ -33,8 +33,25 @@ footer {
   color: white;
   text-align: center;
   padding: 1rem;
-  margin-top: 2rem;
+  margin-top: 0rem;
+  line-height: 1rem;
 }
+
+footer a {
+  color: white;
+  /* text-decoration: none; */
+  margin: 0 0.3rem;
+}
+
+footer a:visited {
+  color: white;
+}
+
+footer a:hover,
+footer a:focus {
+  text-decoration: underline;
+}
+
 
 .vehicle-grid {
   display: flex;
