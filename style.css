@@ -8,6 +8,7 @@ header .logo {
 nav a {
   color: white;
   margin: 0 0.5rem;
+  font-size: small;
 }
 
 /* Ensure visited links match normal links */
