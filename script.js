@@ -1,47 +1,46 @@
 // script.js
-document.addEventListener("DOMContentLoaded", async () => {
-  const sheetName = "BMW";
-  const sheetID = "18DipGlUjrFydq-xeJncUWtAhSiU2C4l6T8EZhrz9nu4";
-  const sheetURL = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:json&sheet=${sheetName}`;
+document.addEventListener("DOMContentLoaded", async function () {
+  const sheetURL =
+    "https://docs.google.com/spreadsheets/d/18DipGlUjrFydq-xeJncUWtAhSiU2C4l6T8EZhrz9nu4/gviz/tq?tqx=out:json&sheet=BMW";
 
-  // Helper: clean currency values
-  const cleanValue = (val) => parseFloat(val.replace(/[^\d.]/g, ""));
+  try {
+    const response = await fetch(sheetURL);
+    const text = await response.text();
 
-  async function fetchSheetData() {
-    try {
-      const res = await fetch(sheetURL);
-      const text = await res.text();
-      const json = JSON.parse(text.substr(47).slice(0, -2)); // strip wrapper
-      const rows = json.table.rows.map(r => r.c.map(c => (c ? c.v : "")));
-      return rows.slice(1); // skip header
-    } catch (err) {
-      console.error("Error fetching sheet data:", err);
-      return [];
-    }
-  }
+    // Clean the Google Sheets response
+    const json = JSON.parse(text.substr(47).slice(0, -2));
+    const rows = json.table.rows;
 
-  const data = await fetchSheetData();
-  if (!data.length) return;
+    // Helper: format as ¢12,345.68
+    const formatPrice = (value) => {
+      const num = parseFloat(value.toString().replace(/[^\d.-]/g, ""));
+      if (isNaN(num)) return "N/A";
+      return "¢" + num.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    };
 
-  // Go through each vehicle card and update prices
-  data.forEach(row => {
-    const name = row[0]; // e.g. "BMW i3 SEDAN"
-    const ghsNew = row[2]; // column C
-    const ghsUsed = row[4]; // column E
+    // Go through each card and match it to the sheet row
+    const cards = document.querySelectorAll(".vehicle-card");
 
-    document.querySelectorAll(".vehicle-card").forEach(card => {
-      const title = card.querySelector("h2").textContent.trim().toLowerCase();
-      if (title.includes(name.toLowerCase())) {
+    cards.forEach((card) => {
+      const modelName = card.querySelector("h2").innerText.trim().toLowerCase();
+
+      const row = rows.find((r) => {
+        const sheetName = (r.c[0]?.v || "").trim().toLowerCase();
+        return sheetName.includes(modelName.split(" ")[1]); // match by key word like i3, iX1, etc.
+      });
+
+      if (row) {
+        const newPrice = row.c[2]?.v || "";
+        const preownedPrice = row.c[4]?.v || "";
+
         const newPriceEl = card.querySelector(".price.new");
-        const usedPriceEl = card.querySelector(".price.preowned");
+        const prePriceEl = card.querySelector(".price.preowned");
 
-        if (newPriceEl) newPriceEl.textContent = `New: ¢${ghsNew}`;
-        if (usedPriceEl && ghsUsed && ghsUsed !== "-") {
-          usedPriceEl.textContent = `Pre-owned: ¢${ghsUsed}`;
-        } else if (usedPriceEl) {
-          usedPriceEl.remove();
-        }
+        newPriceEl.textContent = "New: " + formatPrice(newPrice);
+        prePriceEl.textContent = "Pre-owned: " + formatPrice(preownedPrice);
       }
     });
-  });
+  } catch (err) {
+    console.error("Error loading BMW prices:", err);
+  }
 });
