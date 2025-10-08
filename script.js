@@ -1,72 +1,47 @@
+// script.js
 document.addEventListener("DOMContentLoaded", async () => {
-  const rateAPI = "https://api.exchangerate.host/latest?base=USD&symbols=GHS";
-  const cacheKey = "usd_to_ghs_rate";
-  const cacheTimeKey = "usd_to_ghs_rate_time";
-  const CACHE_DURATION_HOURS = 24; // refresh daily
+  const sheetName = "BMW";
+  const sheetID = "18DipGlUjrFydq-xeJncUWtAhSiU2C4l6T8EZhrz9nu4";
+  const sheetURL = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:json&sheet=${sheetName}`;
 
-  async function fetchExchangeRate() {
+  // Helper: clean currency values
+  const cleanValue = (val) => parseFloat(val.replace(/[^\d.]/g, ""));
+
+  async function fetchSheetData() {
     try {
-      const response = await fetch(rateAPI);
-      if (!response.ok) throw new Error("Network response error");
-      const data = await response.json();
-      const rawRate = data.rates.GHS;
-      const adjustedRate = rawRate + 1; // add $1 to the rate per your rule
+      const res = await fetch(sheetURL);
+      const text = await res.text();
+      const json = JSON.parse(text.substr(47).slice(0, -2)); // strip wrapper
+      const rows = json.table.rows.map(r => r.c.map(c => (c ? c.v : "")));
+      return rows.slice(1); // skip header
+    } catch (err) {
+      console.error("Error fetching sheet data:", err);
+      return [];
+    }
+  }
 
-      // cache it
-      localStorage.setItem(cacheKey, adjustedRate);
-      localStorage.setItem(cacheTimeKey, Date.now());
-      console.log(`Fetched new rate: ${adjustedRate.toFixed(2)}`);
-      return adjustedRate;
-    } catch (error) {
-      console.warn("Could not fetch live rate, using cached or fallback:", error);
-      const cachedRate = localStorage.getItem(cacheKey);
-      if (cachedRate) {
-        console.log(`Using cached rate: ${parseFloat(cachedRate).toFixed(2)}`);
-        return parseFloat(cachedRate);
-      } else {
-        console.log("No cache available — defaulting to 16.0 GHS/USD");
-        return 16.0; // fallback
+  const data = await fetchSheetData();
+  if (!data.length) return;
+
+  // Go through each vehicle card and update prices
+  data.forEach(row => {
+    const name = row[0]; // e.g. "BMW i3 SEDAN"
+    const ghsNew = row[2]; // column C
+    const ghsUsed = row[4]; // column E
+
+    document.querySelectorAll(".vehicle-card").forEach(card => {
+      const title = card.querySelector("h2").textContent.trim().toLowerCase();
+      if (title.includes(name.toLowerCase())) {
+        const newPriceEl = card.querySelector(".price.new");
+        const usedPriceEl = card.querySelector(".price.preowned");
+
+        if (newPriceEl) newPriceEl.textContent = `New: ¢${ghsNew}`;
+        if (usedPriceEl && ghsUsed && ghsUsed !== "-") {
+          usedPriceEl.textContent = `Pre-owned: ¢${ghsUsed}`;
+        } else if (usedPriceEl) {
+          usedPriceEl.remove();
+        }
       }
-    }
-  }
-
-  function isCacheValid() {
-    const savedTime = localStorage.getItem(cacheTimeKey);
-    if (!savedTime) return false;
-    const elapsedHours = (Date.now() - parseInt(savedTime, 10)) / (1000 * 60 * 60);
-    return elapsedHours < CACHE_DURATION_HOURS;
-  }
-
-  async function getRate() {
-    if (isCacheValid()) {
-      const cachedRate = parseFloat(localStorage.getItem(cacheKey));
-      console.log(`Using cached valid rate: ${cachedRate.toFixed(2)}`);
-      return cachedRate;
-    } else {
-      return await fetchExchangeRate();
-    }
-  }
-
-  // Run the dynamic pricing update
-  const rate = await getRate();
-
-  // Base cost in USD for each model
-  const vehicles = {
-    bmwi3: { usd: 45000 },
-    bmwix: { usd: 56000 },
-    bmwix3: { usd: 52000 },
-    bmwix1: { usd: 48000 }
-  };
-
-  Object.keys(vehicles).forEach(model => {
-    const usd = vehicles[model].usd;
-    const ghsNew = usd * rate;
-    const ghsUsed = ghsNew * 0.7; // pre-owned discount (30%)
-
-    const newEl = document.getElementById(`${model}-new`);
-    const usedEl = document.getElementById(`${model}-used`);
-
-    if (newEl) newEl.textContent = `New: ¢${ghsNew.toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
-    if (usedEl) usedEl.textContent = `Pre-owned: ¢${ghsUsed.toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
+    });
   });
 });
