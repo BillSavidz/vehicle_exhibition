@@ -3,47 +3,119 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BMW Showroom</title>
+  <title>Vehicle Exhibition</title>
   <link rel="stylesheet" href="style.css" />
-  <script defer src="script.js"></script>
+  <script defer src="script.js"></script> <!-- Added -->
 </head>
 <body>
-  <!-- Logo -->
   <header>
-    <img src="logo.png" alt="BMW Logo" class="logo">
+    <img src="logo.jpg" alt="Zerosol Logo" class="logo" />
     <h1>BMW Showroom</h1>
+    <nav>
+      <a href="bmw.html">BMW</a> | 
+      <a href="toyota.html">Toyota</a> | 
+      <a href="volkswagen.html">Volkswagen</a> | 
+      <a href="mercedes.html">Mercedes</a>
+    </nav>
   </header>
 
-  <!-- Vehicle Grid -->
-  <section class="showroom">
-    <div class="vehicle-card" data-usd="45000" data-video="https://www.youtube.com/watch?v=8qLzYjL0KVE">
-      <img src="bmw-3series.jpg" alt="BMW 3 Series">
-      <h2>BMW 3 Series</h2>
-      <p>USD Price: $45,000</p>
-      <p class="price-ghs">Loading GHS price...</p>
+  <main class="vehicle-grid">
+    <p class="tax-note">Tap on vehicle models for a video preview.</p> 
+
+    <!-- BMW i3 Sedan -->
+    <div class="vehicle-card" data-model="bmwi3" data-usd="45000">
+      <a href="https://youtu.be/GQSP77fRahg?si=rq_WZKRTS4BLbUDb" target="_blank" class="card-link">
+        <img src="i3_sedan.jpg" alt="BMW i3 Sedan">
+      </a>
+      <h2>BMW i3 Sedan</h2>
+      <p>
+        • Range: 526 km<br>
+        • Power: 340 hp | 0 - 100 km/h in 6.2 secs<br>
+        • BMW Connected Drive Services<br>
+        • Parking distance assistance<br>
+        • 18" alloy wheels<br>
+        • Heads-up display (HUD)
+      </p>
+      <div class="price-tags">
+        <span class="price new" id="bmwi3-new">Loading...</span>
+        <span class="price preowned" id="bmwi3-used">Loading...</span>
+      </div>
     </div>
 
-    <div class="vehicle-card" data-usd="56000" data-video="https://www.youtube.com/watch?v=0fKZ2y7E4so">
-      <img src="bmw-5series.jpg" alt="BMW 5 Series">
-      <h2>BMW 5 Series</h2>
-      <p>USD Price: $56,000</p>
-      <p class="price-ghs">Loading GHS price...</p>
+    <!-- BMW iX SUV -->
+    <div class="vehicle-card" data-model="bmwix" data-usd="56000">
+      <a href="https://youtu.be/PuUdDMMGpsY?si=wLDJMHsxcL9h_WCu" target="_blank" class="card-link">
+        <img src="iX_SUV.jpg" alt="BMW iX SUV">
+      </a>
+      <h2>BMW iX SUV</h2>
+      <p>
+        • Range: 750 km<br>
+        • Power: 544 hp | 0 - 100 km/h in 4.6 secs<br>
+        • BMW Connected Drive Services<br>
+        • Parking distance assistance<br>
+        • 21" alloy wheels<br>
+        • Heads-up display (HUD)
+      </p>
+      <div class="price-tags">
+        <span class="price new" id="bmwix-new">Loading...</span>
+        <span class="price preowned" id="bmwix-used">Loading...</span>
+      </div>
     </div>
 
-    <div class="vehicle-card" data-usd="72000" data-video="https://www.youtube.com/watch?v=2T1b8lVtw5A">
-      <img src="bmw-x5.jpg" alt="BMW X5">
-      <h2>BMW X5</h2>
-      <p>USD Price: $72,000</p>
-      <p class="price-ghs">Loading GHS price...</p>
+    <!-- BMW iX3 SUV -->
+    <div class="vehicle-card" data-model="bmwix3" data-usd="52000">
+      <a href="https://youtu.be/cHwxLArunRI?si=MS3wWlnlcDuCmCPi" target="_blank" class="card-link">
+        <img src="iX3_SUV.jpg" alt="BMW iX3 SUV">
+      </a>
+      <h2>BMW iX3 SUV</h2>
+      <p>
+        • Range: 540 km<br>
+        • Power: 286 hp | 0 - 100 km/h in 3.7 secs<br>
+        • BMW Connected Drive Services<br>
+        • Parking distance assistance<br>
+        • 20" alloy wheels<br>
+        • Heads-up display (HUD)
+      </p>
+      <div class="price-tags">
+        <span class="price new" id="bmwix3-new">Loading...</span>
+        <span class="price preowned" id="bmwix3-used">Loading...</span>
+      </div>
     </div>
-  </section>
 
-  <!-- Notice before footer -->
-  <p class="tax-note">All prices are tax included.</p>
+    <!-- BMW iX1 SUV -->
+    <div class="vehicle-card" data-model="bmwix1" data-usd="48000">
+      <a href="https://youtu.be/ogasA3n22yg?si=goOUaa2Az6CSikyn" target="_blank" class="card-link">
+        <img src="ix1.jpg" alt="BMW iX1 SUV">
+      </a>
+      <h2>BMW iX1 SUV</h2>
+      <p>
+        • Range: 510 km<br>
+        • Power: 204 hp | 0 - 100 km/h in 5.6 secs<br>
+        • BMW Connected Drive Services<br>
+        • Parking distance assistance<br>
+        • 17" alloy wheels<br>
+        • Heads-up display (HUD)
+      </p>
+      <div class="price-tags">
+        <span class="price new" id="bmwix1-new">Loading...</span>
+        <span class="price preowned" id="bmwix1-used">Loading...</span>
+      </div>
+    </div>
 
-  <!-- Footer -->
+    <p class="tax-note">All prices include fees/port charges.</p>
+  </main>
+
   <footer>
-    <p>&copy; 2025 BMW Ghana | All rights reserved.</p>
+    <p>
+      Contact us: 
+      <a href="mailto:sales@zerosolafrica.co">sales@zerosolafrica.co</a>
+    </p>
+    <p>
+      ☎<a href="tel:+233543117185">+233 54 311 7185</a> | 
+      <a href="tel:+233267485992">+233 26 748 5992</a> | 
+      <a href="tel:+17348833934">+1 (734) 883-3934</a>
+    </p>
+    <p>&copy; 2025 Zerosol Automotives. All rights reserved.</p>
   </footer>
 </body>
 </html>
