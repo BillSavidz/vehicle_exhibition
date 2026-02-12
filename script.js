@@ -1,7 +1,5 @@
-// script.js
-// Reads prices from published Google Sheet and injects into each showroom page
-
 const SHEET_ID = "18DipGlUjrFydq-xeJncUWtAhSiU2C4l6T8EZhrz9nu4";
+
 const SHEET_MAP = {
   bmw: "BMW",
   toyota: "Toyota",
@@ -9,97 +7,100 @@ const SHEET_MAP = {
   mercedes: "Mercedes"
 };
 
-// --- Helper functions ---
-
-function normalize(str) {
-  if (!str) return "";
-  return str
-    .toLowerCase()
-    .replace(/volkwagen/g, "volkswagen") // fix sheet typo
-    .replace(/[^a-z0-9\s]/g, "")
-    .replace(/\s+/g, " ")
-    .trim();
-}
-
-function parseNumber(val) {
-  if (!val) return NaN;
-  const n = parseFloat(String(val).replace(/[^0-9.-]/g, ""));
-  return isNaN(n) ? NaN : n;
-}
-
 function formatGHS(val) {
-  const n = parseNumber(val);
-  return isNaN(n)
-    ? "—"
-    : "¢" + n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  if (!val) return "—";
+  const num = parseFloat(String(val).replace(/[^\d.-]/g, ""));
+  if (isNaN(num)) return "—";
+
+  return "¢" + num.toLocaleString(undefined, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  });
 }
 
-function sheetUrlFor(sheetName) {
-  return `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(
-    sheetName
-  )}`;
+function sheetUrl(sheetName) {
+  return `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(sheetName)}`;
 }
 
-function findBestRow(rows, cardTitle) {
-  const normTitle = normalize(cardTitle);
-  let bestRow = null;
-  let bestScore = 0;
+function createVehicleCard(vehicle) {
+  const {
+    name,
+    ghsNew,
+    ghsPre,
+    specs,
+    yt,
+    image
+  } = vehicle;
 
-  for (const row of rows) {
-    const nameCell = row.c[0]?.v || "";
-    const normName = normalize(nameCell);
-    if (!normName) continue;
+  const card = document.createElement("div");
+  card.className = "vehicle-card";
 
-    // Token match scoring
-    const t1 = new Set(normTitle.split(" "));
-    const t2 = new Set(normName.split(" "));
-    const intersection = [...t1].filter(x => t2.has(x));
-    const score = intersection.length / Math.max(t1.size, t2.size);
+  const formattedSpecs = specs
+    ? specs
+        .split("\n")
+        .map(line => line.replace(/^•\s*/, "").trim())
+        .filter(line => line.length > 0)
+        .map(line => `• ${line}`)
+        .join("<br>")
+    : "";
 
-    if (score > bestScore) {
-      bestScore = score;
-      bestRow = row;
-    }
-  }
-  return bestScore > 0.4 ? bestRow : null;
+  card.innerHTML = `
+    <a href="${yt || "#"}" target="_blank" class="card-link">
+      <img src="${image || "placeholder.jpg"}" alt="${name}">
+    </a>
+    <h2>${name}</h2>
+    <p>${formattedSpecs}</p>
+    <div class="price-tags">
+      <span class="price new">New: ${formatGHS(ghsNew)}</span>
+      ${
+        ghsPre && ghsPre !== "-"
+          ? `<span class="price preowned">Pre-owned: ${formatGHS(ghsPre)}</span>`
+          : ""
+      }
+    </div>
+  `;
+
+  return card;
 }
 
-// --- Main ---
-
-(async function () {
-  const page = window.location.pathname.split("/").pop().split(".")[0].toLowerCase();
-  const sheetName = SHEET_MAP[page];
-  if (!sheetName) return console.warn("Unknown brand page:", page);
-
+async function loadVehicles() {
   try {
-    const res = await fetch(sheetUrlFor(sheetName));
-    const text = await res.text();
+    const page = window.location.pathname
+      .split("/")
+      .pop()
+      .split(".")[0]
+      .toLowerCase();
+
+    const sheetName = SHEET_MAP[page];
+    if (!sheetName) return;
+
+    const response = await fetch(sheetUrl(sheetName));
+    const text = await response.text();
     const json = JSON.parse(text.substr(47).slice(0, -2));
     const rows = json.table.rows;
 
-    document.querySelectorAll(".vehicle-card").forEach(card => {
-      const title = card.querySelector("h2")?.textContent.trim();
-      const newEl = card.querySelector(".price.new");
-      const preEl = card.querySelector(".price.preowned");
+    const container = document.getElementById("vehicles-container");
+    container.innerHTML = "";
 
-      const match = findBestRow(rows, title);
-      if (!match) {
-        if (newEl) newEl.textContent = "New: —";
-        if (preEl) preEl.textContent = "Pre-owned: —";
-        console.warn(`No sheet match for: "${title}"`);
-        return;
-      }
+    rows.forEach(row => {
+      if (!row.c || !row.c[0] || !row.c[0].v) return; // skip empty rows
 
-      // Col indexes
-      const ghsNew = match.c[2]?.v || null;
-      const ghsPre = match.c[4]?.v || null;
+      const vehicle = {
+        name: row.c[0]?.v || "",
+        ghsNew: row.c[2]?.v || "",
+        ghsPre: row.c[4]?.v || "",
+        specs: row.c[6]?.v || "",
+        yt: row.c[7]?.v || "",
+        image: row.c[9]?.v || ""
+      };
 
-      if (newEl) newEl.textContent = "New: " + formatGHS(ghsNew);
-      if (preEl) preEl.textContent = "Pre-owned: " + formatGHS(ghsPre);
+      const card = createVehicleCard(vehicle);
+      container.appendChild(card);
     });
 
-    console.log(`Prices updated for "${sheetName}".`);
-  } catch (e) {
-    console.error("Error loading sheet:", e);
+  } catch (error) {
+    console.error("Error loading vehicles:", error);
   }
-})();
+}
+
+document.addEventListener("DOMContentLoaded", loadVehicles);
