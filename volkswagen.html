@@ -3,24 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Vehicle Exhibition</title>
+  <title>Volkswagen Showroom</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="favicon.png" />
+  <meta name="theme-color" content="#1e3a8a">
 </head>
+
 <body>
-  <header>
-    <img src="logo.jpg" alt="Zerosol Logo" class="logo" />
-    <h1>Volkswagen Showroom</h1>
-    <nav>
-      <a href="bmw.html">BMW</a> | 
-      <a href="toyota.html">Toyota</a> | 
-      <a href="volkswagen.html">Volkswagen</a> | 
-      <a href="mercedes.html">Mercedes</a>
-    </nav>
-  </header>
 
-  <main class="vehicle-grid">
-    <p class="tax-note">Tap on vehicle models for a video preview.</p>
+<div id="header-placeholder"></div>
 
+<main class="vehicle-grid">
+  <p class="tax-note">Tap on vehicle models for a video preview.</p>
+  
     <!-- Volkswagen UNYX -->
     <div class="vehicle-card">
       <a href="https://youtu.be/Hd8sQoBBbYA?si=khLqTdVuZavOE2wA" target="_blank" class="card-link">
@@ -80,25 +75,12 @@
       </div>
     </div>
 
-    <p class="tax-note">All prices include fees/port charges.</p>
-  </main>
+  <p class="tax-note">All prices include fees/port charges.</p>
+</main>
 
-  <footer>
-    <p>
-      Contact us: 
-      <a href="mailto:sales@zerosolafrica.co">sales@zerosolafrica.co</a>
-    </p>
-    <p>
-      ☎<a href="tel:+233543117185">+233 54 311 7185</a> | 
-      <a href="tel:+233267485992">+233 26 748 5992</a> | 
-      <a href="tel:+17348833934">+1 (734) 883-3934</a>
-    </p>
-    <p>&copy; <span id="year"></span> Zerosol Automotives. All rights reserved.</p>
-    
-    <script>
-      document.getElementById("year").textContent = new Date().getFullYear();
-    </script>
-  </footer>
-  <script src="script.js"></script>
+<div id="footer-placeholder"></div>
+
+<script src="layout.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
