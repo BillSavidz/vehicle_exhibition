@@ -1,165 +1,28 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Volkswagen Showroom</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="icon" href="favicon.png" />
-  <meta name="theme-color" content="#1e3a8a">
-</head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mercedes Showroom</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="favicon.png" />
+    <meta name="theme-color" content="#1e3a8a" />
+  </head>
 
-<body>
+  <body>
+    <div id="header-placeholder"></div>
 
-<div id="header-placeholder"></div>
+    <main class="vehicle-grid">
+      <p class="tax-note">Tap on vehicle models for a video preview.</p>
 
-<main class="vehicle-grid">
-  <p class="tax-note">Tap on vehicle models for a video preview.</p>
+      <div id="vehicles-container"></div>
 
-    <!-- EQA -->
-    <div class="vehicle-card">
-      <a href="https://youtu.be/VLDPuj4YpLs?si=e2TJYUDbFdghuP8m" target="_blank" class="card-link">
-        <img src="eqa.jpg" alt="Mercedes EQA">
-      </a>
-      <h2>Mercedes EQA</h2>
-      <p>
-        • Range: 580 km<br>
-        • Power: 228 hp | 0 - 100 km/h in 7.7 secs<br>
-        • Premium leather seats<br>
-        • Mercedes-Benz User Experience (MBUX)<br>
-        • 18" AMG alloy wheels<br>
-        • ADAS safety
-      </p>
-      <div class="price-tags">
-        <span class="price new">New: Loading...</span>
-        <span class="price preowned">Pre-owned: Loading...</span>
-      </div>
-    </div>
+      <p class="tax-note">All prices include fees/port charges.</p>
+    </main>
 
-    <!-- EQB -->
-    <div class="vehicle-card">
-      <a href="https://youtu.be/GZ3CjniaJZY?si=gQcEHwFyMmrF28Rf" target="_blank" class="card-link">
-        <img src="eqb.jpg" alt="Mercedes EQB">
-      </a>
-      <h2>Mercedes EQB</h2>
-      <p>
-        • Range: 600 km<br>
-        • Power: 292 hp | 0 - 100 km/h in 6.3 secs<br>
-        • Premium leather seats<br>
-        • Mercedes-Benz User Experience (MBUX)<br>
-        • 18" AMG alloy wheels<br>
-        • ADAS safety
-      </p>
-      <div class="price-tags">
-        <span class="price new">New: Loading...</span>
-        <span class="price preowned">Pre-owned: Loading...</span>
-      </div>
-    </div>
+    <div id="footer-placeholder"></div>
 
-    <!-- EQC -->
-    <div class="vehicle-card">
-      <a href="https://youtu.be/QTx78D5u6ms?si=VsbEISm-6j8-yrCg" target="_blank" class="card-link">
-        <img src="eqc.jpg" alt="Mercedes EQC">
-      </a>
-      <h2>Mercedes EQC</h2>
-      <p>
-        • Range: 450 km<br>
-        • Power: 355 hp | 0 - 100 km/h in 5.1 secs<br>
-        • Premium leather seats<br>
-        • Mercedes-Benz User Experience (MBUX)<br>
-        • 20" AMG alloy wheels<br>
-        • ADAS safety
-      </p>
-      <div class="price-tags">
-        <span class="price preowned">Pre-owned: Loading...</span>
-      </div>
-    </div>
-
-    <!-- EQE Sedan -->
-    <div class="vehicle-card">
-      <a href="https://youtu.be/VqnHzcN1jqY?si=v4LC32uo_zLH_GPt" target="_blank" class="card-link">
-        <img src="eqe_sedan.jpg" alt="Mercedes EQE Sedan">
-      </a>
-      <h2>Mercedes EQE (Sedan)</h2>
-      <p>
-        • Range: 681 km<br>
-        • Power: 408 hp | 0 - 100 km/h in 4.9 secs<br>
-        • Premium leather seats<br>
-        • Mercedes-Benz User Experience (MBUX)<br>
-        • 19" AMG alloy wheels<br>
-        • ADAS safety
-      </p>
-      <div class="price-tags">
-        <span class="price new">New: Loading...</span>
-        <span class="price preowned">Pre-owned: Loading...</span>
-      </div>
-    </div>
-
-    <!-- EQE SUV -->
-    <div class="vehicle-card">
-      <a href="https://youtu.be/bLarlNIw5TQ?si=pvVsH90tAJ_y_LnT" target="_blank" class="card-link">
-        <img src="eqe_SUV.jpg" alt="Mercedes EQE SUV">
-      </a>
-      <h2>Mercedes EQE (SUV)</h2>
-      <p>
-        • Range: 609 km<br>
-        • Power: 408 hp | 0 - 100 km/h in 5.1 secs<br>
-        • Premium leather seats<br>
-        • Mercedes-Benz User Experience (MBUX)<br>
-        • 20" AMG alloy wheels<br>
-        • ADAS safety
-      </p>
-      <div class="price-tags">
-        <span class="price new">New: Loading...</span>
-        <span class="price preowned">Pre-owned: Loading...</span>
-      </div>
-    </div>
-    
-    <!-- Mercedes EQS (Sedan) -->
-<div class="vehicle-card">
-  <a href="#" target="_blank" class="card-link">
-    <img src="eqs_sedan.jpg" alt="Mercedes EQS Sedan">
-  </a>
-  <h2>Mercedes EQS (Sedan)</h2>
-  <p>
-    • Range: 550 km<br>
-    • Power: 355 hp<br>
-    • 0 - 100 km/h in 6.2 secs<br>
-    • Safety: 5-star Euro NCAP<br>
-    • Infotainment: 56-inch MBUX Hyperscreen<br>
-    • 20" alloy wheels
-  </p>
-  <div class="price-tags">
-    <span class="price new">New: Loading...</span>
-    <span class="price preowned">Pre-owned: Loading...</span>
-  </div>
-</div>
-
-    <!-- Mercedes EQS (SUV) -->
-<div class="vehicle-card">
-  <a href="#" target="_blank" class="card-link">
-    <img src="eqs_suv.jpg" alt="Mercedes EQS SUV">
-  </a>
-  <h2>Mercedes EQS (SUV)</h2>
-  <p>
-    • Range: 630 km<br>
-    • Power: 355 hp | 0 - 100 km/h in 6.1 secs<br>
-    • Safety: 5-star Euro NCAP<br>
-    • Infotainment: 56-inch MBUX Hyperscreen<br>
-    • 21" alloy wheels
-  </p>
-  <div class="price-tags">
-    <span class="price new">New: Loading...</span>
-    <span class="price preowned">Pre-owned: Loading...</span>
-  </div>
-</div>
-    
-  <p class="tax-note">All prices include fees/port charges.</p>
-</main>
-
-<div id="footer-placeholder"></div>
-
-<script src="layout.js"></script>
-<script src="script.js"></script>
-</body>
+    <script src="layout.js"></script>
+    <script src="script.js"></script>
+  </body>
 </html>

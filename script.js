@@ -22,15 +22,22 @@ function sheetUrl(sheetName) {
   return `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(sheetName)}`;
 }
 
+function getBrandFromPage() {
+  const page = window.location.pathname.split("/").pop().toLowerCase();
+
+  if (page.includes("bmw")) return "bmw";
+  if (page.includes("toyota")) return "toyota";
+  if (page.includes("volkswagen")) return "volkswagen";
+  if (page.includes("mercedes")) return "mercedes";
+
+  return "default";
+}
+
 function createVehicleCard(vehicle) {
-  const {
-    name,
-    ghsNew,
-    ghsPre,
-    specs,
-    yt,
-    image
-  } = vehicle;
+  const { name, ghsNew, ghsPre, specs, yt, image } = vehicle;
+
+  const brand = getBrandFromPage();
+  const logoPath = `images/logos/${brand}.png`;
 
   const card = document.createElement("div");
   card.className = "vehicle-card";
@@ -38,18 +45,21 @@ function createVehicleCard(vehicle) {
   const formattedSpecs = specs
     ? specs
         .split("\n")
-        .map(line => line.replace(/^•\s*/, "").trim())
-        .filter(line => line.length > 0)
-        .map(line => `• ${line}`)
+        .map(l => l.trim())
+        .filter(Boolean)
         .join("<br>")
     : "";
 
   card.innerHTML = `
+    <img src="${logoPath}" class="brand-logo" alt="${brand} logo">
+
     <a href="${yt || "#"}" target="_blank" class="card-link">
-      <img src="${image || "placeholder.jpg"}" alt="${name}">
+      <img src="images/cars/${image || "placeholder.jpg"}" alt="${name}">
     </a>
+
     <h2>${name}</h2>
     <p>${formattedSpecs}</p>
+
     <div class="price-tags">
       <span class="price new">New: ${formatGHS(ghsNew)}</span>
       ${

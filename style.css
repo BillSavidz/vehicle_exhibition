@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap'); /* Poppins font family*/
+
 * {
   margin: 0;
   padding: 0;
@@ -5,11 +7,12 @@
 }
 
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Poppins', sans-serif;
   background-color: #f4f4f4;
   color: #333;
   line-height: 1.6;
 }
+
 
 header {
   background-color: #1e3a8a;
@@ -17,6 +20,15 @@ header {
   padding: 1rem 2rem;
   text-align: center;
 }
+
+header a {
+  color: white;
+}
+
+header a:visited {
+  color: white;
+}
+
 
 header .logo {
   height: 60px;
@@ -47,6 +59,7 @@ footer a:visited {
 }
 
 .vehicle-card {
+  /* background-color: white; */
   background-color: white;
   border-radius: 12px;
   padding-bottom: 1rem;
@@ -56,23 +69,64 @@ footer a:visited {
     transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
     box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   will-change: transform;
+  position: relative; /* required for logo positioning */
 }
+
+/* .brand-logo {
+  position: absolute;          
+  top: 12px;                   
+  right: 14px;                 
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+  opacity: 0.95;
+  z-index: 10;                
+  pointer-events: none;       
+} */
+
+/* .brand-logo {                              
+  background: rgba(255,255,255,0.85);
+  border-radius: 6px;
+  padding: 3px;
+  backdrop-filter: blur(4px);
+} */
 
 .vehicle-card:hover {
   transform: translateY(-6px) scale(1.02);
   box-shadow: 0 16px 30px rgba(0,0,0,0.18);
 }
 
-.vehicle-card img {
+/* Consistent sizing of images */
+.vehicle-card a img {
+  display: block;
   width: 100%;
-  max-height: 220px;
-  object-fit: contain;
-  padding: 1rem;
+  height: 200px;          /* force consistent visual height */
+  object-fit: contain;    /* keeps proportions */
+  padding: 12px;
   transition: transform 0.4s ease;
 }
 
+/* Overlay logo */
+.brand-logo {
+  scale: 160%;
+  position: absolute;
+  top: 25px;
+  right: 30px;
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+  opacity: 0.95;
+  z-index: 10;
+  pointer-events: none;
+
+  /* backdrop-filter: blur(4px);
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 6px; */
+  padding: 3px;
+}
+
 .vehicle-card:hover img {
-  transform: scale(1.05);
+  transform: scale(1.10) translateY(10px);
 }
 
 .vehicle-card h2 {
