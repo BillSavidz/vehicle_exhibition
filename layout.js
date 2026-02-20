@@ -1,30 +1,36 @@
-async function loadComponent(id, file) {
-  const res = await fetch(file);
-  const html = await res.text();
-  document.getElementById(id).innerHTML = html;
+function getBrand() {
+  const page = window.location.pathname.split("/").pop().toLowerCase();
+  if (page.includes("bmw")) return "bmw";
+  if (page.includes("toyota")) return "toyota";
+  if (page.includes("volkswagen")) return "volkswagen";
+  if (page.includes("mercedes")) return "mercedes";
+  return null;
 }
 
-document.addEventListener("DOMContentLoaded", async () => {
-  await loadComponent("header-placeholder", "header.html");
-  await loadComponent("footer-placeholder", "footer.html");
+const brand = getBrand();
 
-  // Set dynamic page title
-  const page = window.location.pathname.split("/").pop().split(".")[0];
-  const titleMap = {
-    bmw: "BMW Showroom",
-    toyota: "Toyota Showroom",
-    volkswagen: "Volkswagen Showroom",
-    mercedes: "Mercedes Showroom"
-  };
+const headerHTML = `
+<header>
+  <img src="logo.jpg" alt="Zerosol Logo" class="logo">
 
-  const pageTitle = document.getElementById("page-title");
-  if (pageTitle && titleMap[page]) {
-    pageTitle.textContent = titleMap[page];
-  }
+  <h1 class="showroom-title">
+    ${brand ? `<img src="images/logos/${brand}.png" class="title-logo">` : ""}
+    ${
+      brand
+        ? brand === "bmw"
+          ? "BMW"
+          : brand.charAt(0).toUpperCase() + brand.slice(1)
+        : ""
+    } Showroom
+  </h1>
 
-  // Set dynamic year
-  const year = document.getElementById("year");
-  if (year) {
-    year.textContent = new Date().getFullYear();
-  }
-});
+  <nav>
+    <a href="bmw.html">BMW</a> |
+    <a href="toyota.html">Toyota</a> |
+    <a href="volkswagen.html">Volkswagen</a> |
+    <a href="mercedes.html">Mercedes</a>
+  </nav>
+</header>
+`;
+
+document.getElementById("header-placeholder").innerHTML = headerHTML;
