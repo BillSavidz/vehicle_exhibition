@@ -1,9 +1,5 @@
 function getBrand() {
-
-  const page = window.location.pathname
-    .split("/")
-    .pop()
-    .toLowerCase();
+  const page = window.location.pathname.split("/").pop().toLowerCase();
 
   if (page.includes("bmw")) return "bmw";
   if (page.includes("toyota")) return "toyota";
@@ -15,10 +11,22 @@ function getBrand() {
 
 const brand = getBrand();
 
+function navLink(page, label) {
+  const active = window.location.pathname.toLowerCase().includes(page);
+
+  return `
+    <a
+      href="${page}.html"
+      class="${active ? "active-nav" : ""}">
+      ${label}
+    </a>
+  `;
+}
+
 const headerHTML = `
 <header>
 
-  <img src="logo.jpg"
+  <img src="logo.png"
        alt="Zerosol Logo"
        class="logo">
 
@@ -43,49 +51,59 @@ const headerHTML = `
 
   </h1>
 
-  <nav>
-    <a href="bmw.html">BMW</a> |
-    <a href="toyota.html">Toyota</a> |
-    <a href="volkswagen.html">Volkswagen</a> |
-    <a href="mercedes.html">Mercedes</a>
-  </nav>
+<nav>
 
+  ${navLink("bmw", "BMW")}
+
+  ${navLink("toyota", "Toyota")}
+
+  ${navLink("volkswagen", "Volkswagen")}
+
+  ${navLink("mercedes", "Mercedes")}
+
+</nav>
 </header>
 `;
 
 const footerHTML = `
-<footer>
+<footer class="premium-footer">
 
-  <p>
-    Contact us:
+  <div class="footer-brand">
+
+    <h3>Zerosol Automotive</h3>
+
+    <p>
+      Electric vehicle leasing, sales, aftersales services, genuine parts.
+    </p>
+
+  </div>
+
+  <div class="footer-contact">
+
     <a href="mailto:sales@zerosolafrica.co">
-      sales@zerosolafrica.co
+      ✉ sales@zerosolafrica.co
     </a>
-  </p>
 
-  <p>
-    ☎
     <a href="tel:+233595445544">
-      +233 59 544 5544
+      ☎ +233 59 544 5544
     </a>
-    |
 
     <a href="tel:+233595444454">
-      +233 59 544 4454
+      ☎ +233 59 544 4454
     </a>
-    |
 
     <a href="tel:+17348833934">
-      +1 (734) 883-3934
+      ☎ +1 (734) 883-3934
     </a>
-  </p>
 
-  <p>
-    &copy;
-    <span id="year"></span>
-    Zerosol Automotive.
-    All rights reserved.
-  </p>
+  </div>
+
+  <div class="footer-copyright">
+
+    © <span id="year"></span>
+    Zerosol Automotive
+
+  </div>
 
 </footer>
 `;
@@ -94,5 +112,16 @@ document.getElementById("header-placeholder").innerHTML = headerHTML;
 
 document.getElementById("footer-placeholder").innerHTML = footerHTML;
 
-document.getElementById("year").textContent =
-  new Date().getFullYear();
+document.getElementById("year").textContent = new Date().getFullYear();
+
+function navLink(page, label) {
+  const active = window.location.pathname.includes(page);
+
+  return `
+    <a
+      href="${page}.html"
+      class="${active ? "active-nav" : ""}">
+      ${label}
+    </a>
+  `;
+}

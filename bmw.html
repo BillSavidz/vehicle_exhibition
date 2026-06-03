@@ -15,12 +15,85 @@
     <div id="header-placeholder"></div>
 
     <main class="vehicle-grid">
-      <p class="tax-note">Tap on models for a video preview.</p>
+      <div class="search-row">
+        <input type="text" id="search-box" placeholder="Search vehicles..." />
+
+        <button id="sort-btn" title="Sort by Price">
+          <img id="sort-icon" src="images/icons/sort.svg" alt="Sort" />
+        </button>
+        <button id="filter-btn" title="Price Filter">
+          <img src="images/icons/filter.svg" alt="Filter" />
+        </button>
+      </div>
+
+      <div id="price-filter-row" class="price-filter-row hidden">
+        <div class="price-input-wrapper">
+          <span class="currency-label"> GHS </span>
+
+          <input type="number" id="min-price" placeholder="Min" step="10000" />
+        </div>
+
+        <div class="price-input-wrapper">
+          <span class="currency-label"> GHS </span>
+
+          <input type="number" id="max-price" placeholder="Max" step="10000" />
+        </div>
+
+        <button id="clear-filters" title="Clear Filters">✕</button>
+      </div>
+      <p class="tax-note">Tap on vehicle cards to make enquiries.</p>
+      <div id="results-count" class="results-count">Showing 0 vehicles</div>
 
       <div id="vehicles-container"></div>
 
       <p class="tax-note">All prices include fees/port charges.</p>
     </main>
+
+    <!-- VEHICLE DETAILS MODAL -->
+    <div id="vehicle-modal" class="modal">
+      <div class="modal-content vehicle-modal-content">
+        <span class="close-btn" onclick="closeVehicleModal()"> &times; </span>
+
+        <img
+          id="modal-image"
+          class="modal-vehicle-image"
+          src=""
+          alt="Vehicle"
+        />
+
+        <h2 id="modal-title"></h2>
+
+        <div id="modal-class" class="vehicle-class"></div>
+
+        <div class="starting-price">Starting From</div>
+
+        <div id="modal-price" class="starting-price-value"></div>
+
+        <p id="modal-specs"></p>
+
+        <div class="modal-actions">
+          <a id="modal-video" class="cta-btn enquire-btn" target="_blank">
+            Watch Video
+          </a>
+        </div>
+
+        <div class="cta-buttons">
+          <button id="modal-enquire" class="cta-btn enquire-btn">
+            Enquire
+          </button>
+
+          <a id="modal-whatsapp" class="cta-btn whatsapp-btn" target="_blank">
+            <img
+              src="images/icons/whatsapp.png"
+              class="whatsapp-icon"
+              alt="WhatsApp"
+            />
+
+            <span>Leave a Message</span>
+          </a>
+        </div>
+      </div>
+    </div>
 
     <!-- ENQUIRY MODAL -->
     <div id="enquiry-modal" class="modal">
