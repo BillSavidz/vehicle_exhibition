@@ -72,6 +72,12 @@ function createVehicleCard(vehicle) {
         .join("<br>")
     : "";
 
+  const hasNewPrice = ghsNew && ghsNew !== "-" && getPriceNumber(ghsNew) > 0;
+
+  const primaryLabel = hasNewPrice ? "Brand New" : "Pre-Owned";
+
+  const primaryPrice = hasNewPrice ? formatGHS(ghsNew) : formatGHS(ghsPre);
+
   card.innerHTML = `
 
     <img
@@ -84,9 +90,6 @@ function createVehicleCard(vehicle) {
       class="card-link"
       onclick="event.stopPropagation(); openVehicleModal('${encodeURIComponent(
         JSON.stringify(vehicle),
-      )}'); return false;"
-      onclick="openVehicleModal('${encodeURIComponent(
-        JSON.stringify(vehicle),
       )}'); return false;">
 
       <img
@@ -98,40 +101,45 @@ function createVehicleCard(vehicle) {
     <h2>${name}</h2>
 
     <div class="vehicle-class">
-      ${classSize}
+      ${classSize || ""}
     </div>
 
     <div class="starting-price">
-      Certified Pre-Owned Starting From
+      ${
+        hasNewPrice
+          ? "Brand New Starting From"
+          : "Certified Pre-Owned Starting From"
+      }
     </div>
 
     <div class="starting-price-value">
-      ${formatGHS(ghsPre)}
+      ${primaryPrice}
     </div>
 
     <p>${formattedSpecs}</p>
 
     <div class="price-section">
 
-  <div class="price-label">
-    Brand New
-  </div>
-
-  <div class="price-main">
-    ${formatGHS(ghsNew)}
-  </div>
-
-  ${
-    ghsPre && ghsPre !== "-"
-      ? `
-      <div class="price-secondary">
-        CPO from ${formatGHS(ghsPre)}
+      <div class="price-label">
+        ${primaryLabel}
       </div>
-      `
-      : ""
-  }
 
-</div>
+      <div class="price-main">
+        ${primaryPrice}
+      </div>
+
+      ${
+        hasNewPrice && ghsPre && ghsPre !== "-"
+          ? `
+          <div class="price-secondary">
+            CPO from ${formatGHS(ghsPre)}
+          </div>
+          `
+          : ""
+      }
+
+    </div>
+
   `;
 
   return card;
@@ -140,21 +148,31 @@ function createVehicleCard(vehicle) {
 function openVehicleModal(encodedVehicle) {
   const vehicle = JSON.parse(decodeURIComponent(encodedVehicle));
 
+  const hasNewPrice =
+    vehicle.ghsNew &&
+    vehicle.ghsNew !== "-" &&
+    getPriceNumber(vehicle.ghsNew) > 0;
+
   document.getElementById("modal-image").src = `images/cars/${vehicle.image}`;
 
   document.getElementById("modal-title").textContent = vehicle.name;
 
   document.getElementById("modal-class").textContent = vehicle.classSize || "";
 
-  document.getElementById("modal-price").textContent = formatGHS(
-    vehicle.ghsNew,
-  );
+  document.querySelector("#vehicle-modal .starting-price").textContent =
+    hasNewPrice
+      ? "Brand New Starting From"
+      : "Certified Pre-Owned Starting From";
+
+  document.getElementById("modal-price").textContent = hasNewPrice
+    ? formatGHS(vehicle.ghsNew)
+    : formatGHS(vehicle.ghsPre);
 
   document.getElementById("modal-specs").innerHTML = vehicle.specs
-    .split("\n")
-    .join("<br>");
+    ? vehicle.specs.split("\n").join("<br>")
+    : "";
 
-  document.getElementById("modal-video").href = vehicle.yt;
+  document.getElementById("modal-video").href = vehicle.yt || "#";
 
   document.getElementById("modal-enquire").onclick = () =>
     openEnquiry(vehicle.name);
