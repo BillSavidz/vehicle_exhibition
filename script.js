@@ -189,15 +189,27 @@ function closeVehicleModal() {
   document.getElementById("vehicle-modal").style.display = "none";
 }
 
+function getInputNumber(id) {
+  return Number(document.getElementById(id).value.replace(/,/g, "")) || 0;
+}
+
+function getVehiclePrice(vehicle) {
+  const newPrice = getPriceNumber(vehicle.ghsNew);
+
+  if (newPrice > 0) return newPrice;
+
+  return getPriceNumber(vehicle.ghsPre);
+}
+
 function applyFilters() {
   let vehicles = [...allVehicles];
 
   const searchTerm =
     document.getElementById("search-box")?.value.toLowerCase() || "";
 
-  const minPrice = Number(document.getElementById("min-price")?.value || 0);
+  const minPrice = getInputNumber("min-price");
 
-  const maxPrice = Number(document.getElementById("max-price")?.value || 0);
+  const maxPrice = getInputNumber("max-price");
 
   const filterBtn = document.getElementById("filter-btn");
 
@@ -214,23 +226,19 @@ function applyFilters() {
   }
 
   if (minPrice) {
-    vehicles = vehicles.filter((v) => getPriceNumber(v.ghsNew) >= minPrice);
+    vehicles = vehicles.filter((v) => getVehiclePrice(v) >= minPrice);
   }
 
   if (maxPrice) {
-    vehicles = vehicles.filter((v) => getPriceNumber(v.ghsNew) <= maxPrice);
+    vehicles = vehicles.filter((v) => getVehiclePrice(v) <= maxPrice);
   }
 
   if (currentSort === 1) {
-    vehicles.sort(
-      (a, b) => getPriceNumber(a.ghsNew) - getPriceNumber(b.ghsNew),
-    );
+    vehicles.sort((a, b) => getVehiclePrice(a) - getVehiclePrice(b));
   }
 
   if (currentSort === 2) {
-    vehicles.sort(
-      (a, b) => getPriceNumber(b.ghsNew) - getPriceNumber(a.ghsNew),
-    );
+    vehicles.sort((a, b) => getVehiclePrice(b) - getVehiclePrice(a));
   }
 
   renderVehicles(vehicles);
@@ -400,11 +408,23 @@ document.addEventListener("submit", async function (e) {
 });
 
 document.addEventListener("input", function (e) {
-  if (
-    e.target.id === "search-box" ||
-    e.target.id === "min-price" ||
-    e.target.id === "max-price"
-  ) {
+  // Search box
+  if (e.target.id === "search-box") {
+    applyFilters();
+    return;
+  }
+
+  // Price inputs
+  if (e.target.id === "min-price" || e.target.id === "max-price") {
+    // Keep digits only
+    let value = e.target.value.replace(/[^\d]/g, "");
+
+    // Prevent negative values
+    if (Number(value) < 0) value = "0";
+
+    // Add comma separators
+    e.target.value = value === "" ? "" : Number(value).toLocaleString("en-US");
+
     applyFilters();
   }
 });
