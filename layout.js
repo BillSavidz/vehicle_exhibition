@@ -46,9 +46,7 @@ const headerHTML = `
           : brand.charAt(0).toUpperCase() + brand.slice(1)
         : ""
     }
-
     Showroom
-
   </h1>
 
 <nav>
